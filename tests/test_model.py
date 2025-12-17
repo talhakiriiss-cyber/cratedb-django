@@ -262,7 +262,7 @@ def test_clustered_by():
         three = fields.TextField()
 
         class Meta:
-            app_label = "ignore"
+            app_label = "_crate_test"
             clustered_by = "one"
             number_of_shards = 3
 

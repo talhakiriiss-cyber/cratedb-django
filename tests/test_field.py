@@ -9,6 +9,8 @@ from cratedb_django.models import functions
 from cratedb_django import fields
 from cratedb_django.models.functions import UUID
 from tests.test_app.models import ArraysModel
+from tests.test_app.models import GeneratedModel
+
 from tests.utils import get_sql_of
 
 
@@ -148,10 +150,10 @@ def test_generated_field():
             expression=F("f1") / F("f2"), output_field=models.IntegerField()
         )
         ff = fields.GeneratedField(
-            expression=F("f1") + 1, output_field=models.IntegerField(), db_persist=True
+            expression=F("f1") + 1, output_field=models.IntegerField(), db_persist=False
         )
         f_func = fields.GeneratedField(
-            expression=UUID(), output_field=models.CharField()
+            expression=UUID(), output_field=models.CharField(max_length=120)
         )
 
         class Meta:
@@ -169,5 +171,13 @@ def test_generated_field():
     ]
 
     sql, params = get_sql_of(SomeModel).field("f_func")
-    assert sql.strip() == "varchar GENERATED ALWAYS AS (gen_random_text_uuid())"
+    assert sql.strip() == "varchar(120) GENERATED ALWAYS AS (gen_random_text_uuid())"
     assert not params
+
+
+def test_insert_generated_field():
+    """Verify a real insert with many generated fields"""
+    obj = GeneratedModel.objects.create(f1=1, f2=2)
+    assert obj.f == 0
+    assert obj.ff == 2
+    assert obj.f_func
