@@ -1,8 +1,10 @@
 import datetime, uuid
 
+from django.db.models import F
 
 from cratedb_django import fields
 from cratedb_django.models import CrateModel
+from cratedb_django.models.functions import UUID
 
 """
 We need to register the models here so they get correctly configured and
@@ -75,3 +77,20 @@ class RefreshModel(CrateModel):
     class Meta:
         app_label = "test_app"
         auto_refresh = True
+
+
+class GeneratedModel(CrateModel):
+    f1 = fields.IntegerField()
+    f2 = fields.IntegerField()
+    f = fields.GeneratedField(
+        expression=F("f1") / F("f2"), output_field=fields.IntegerField()
+    )
+    ff = fields.GeneratedField(
+        expression=F("f1") + 1, output_field=fields.IntegerField(), db_persist=False
+    )
+    f_func = fields.GeneratedField(
+        expression=UUID(), output_field=fields.CharField(max_length=120)
+    )
+
+    class Meta:
+        app_label = "test_app"

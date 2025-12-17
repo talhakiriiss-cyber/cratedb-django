@@ -15,5 +15,9 @@ class DatabaseFeatures(BaseDatabaseFeatures):
     can_rollback_ddl = False
     can_return_columns_from_insert = True
 
+    # We set it as True so we can use GeneratedFields, but
+    # we ignore it at sql creation time.
+    supports_virtual_generated_columns = True
+
     def supports_transactions(self):
         return False

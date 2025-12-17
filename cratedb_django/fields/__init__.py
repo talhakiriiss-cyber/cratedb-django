@@ -65,8 +65,8 @@ class GeneratedField(CrateDBBaseField, GeneratedField):
                 f"`db_persist` will be ignored."
             )
 
-        # Always set it as True because the default is None.
-        kwargs["db_persist"] = True
+        # Always set it as False because the default is None.
+        kwargs["db_persist"] = False
 
         super().__init__(*args, **kwargs)
 
