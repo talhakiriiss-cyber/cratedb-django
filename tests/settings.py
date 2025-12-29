@@ -2,10 +2,9 @@
 DATABASES = {
     "default": {
         "ENGINE": "cratedb_django",
-        "SERVERS": ["localhost:4200"],
+        "SERVERS": ["192.168.88.251:4200"],
     }
 }
-
 
 # Below are all necessary settings to load typical django migrations,
 # which we use to test migrations

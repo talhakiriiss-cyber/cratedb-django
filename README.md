@@ -37,15 +37,15 @@ DATABASES = {
 }
 ```
 
-After that, for a model to be used in CrateDB, you need to use `CrateModel` as a
+After that, for a model to be used in CrateDB, you need to use `CrateDBModel` as a
 base class.
 
 ```python
 from django.db import models
-from cratedb_django.models import CrateModel
+from cratedb_django.models import CrateDBModel
 
 
-class Metrics(CrateModel):
+class Metrics(CrateDBModel):
     id = models.TextField(primary_key=True, db_default=UUID())
     value = models.IntegerField()
 ```

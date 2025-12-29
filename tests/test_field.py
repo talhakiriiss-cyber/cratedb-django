@@ -5,7 +5,7 @@ from django.db.models.expressions import F, RawSQL
 from django.forms.models import model_to_dict
 
 from cratedb_django.fields import CharField
-from cratedb_django.models import CrateModel, functions
+from cratedb_django.models import CrateDBModel, functions
 from cratedb_django import fields
 from cratedb_django.models.functions import UUID
 from tests.test_app.models import ArraysModel, GeneratedModel
@@ -32,7 +32,7 @@ def test_field_with_uuid_default():
 
 
 def test_field_array_creation():
-    class SomeModel(CrateModel):
+    class SomeModel(CrateDBModel):
         f1 = fields.ArrayField(fields.IntegerField())
         f2 = fields.ArrayField(
             fields.ArrayField(fields.CharField(max_length=120))
@@ -67,7 +67,7 @@ def test_field_array_deconstruct():
     the field and deserialize in other places like migrations.
     """
 
-    class SomeModel(CrateModel):
+    class SomeModel(CrateDBModel):
         f = fields.ArrayField(fields.CharField())
 
         class Meta:
@@ -127,7 +127,7 @@ def test_array_deconstruct():
     the field and deserialize in other places like migrations.
     """
 
-    class SomeModel(CrateModel):
+    class SomeModel(CrateDBModel):
         f = fields.ArrayField(fields.CharField())
 
         class Meta:
@@ -146,7 +146,7 @@ def test_generated_field():
     Verify that a generated field works in CrateDB.
     """
 
-    class SomeModel(CrateModel):
+    class SomeModel(CrateDBModel):
         f1 = fields.IntegerField()
         f2 = fields.IntegerField()
         f = fields.GeneratedField(
@@ -194,7 +194,7 @@ def test_insert_generated_field():
 def test_object_field_creation():
     """Verifies that ObjectField applies correctly the column policy"""
 
-    class SomeModel(CrateModel):
+    class SomeModel(CrateDBModel):
         f = fields.ObjectField()
         f1 = fields.ObjectField(policy="ignored")
         f2 = fields.ObjectField(
@@ -226,7 +226,7 @@ def test_object_field_creation():
 def test_uuid_field():
     """Verify that UUIDField sets the expected character size"""
 
-    class SomeModel(CrateModel):
+    class SomeModel(CrateDBModel):
         f = fields.UUIDField()
 
         class Meta:
@@ -237,7 +237,7 @@ def test_uuid_field():
 
 
 def test_composite_primary_key():
-    class Metrics(CrateModel):
+    class Metrics(CrateDBModel):
         timestamp = fields.DateTimeField()
         some_value = fields.IntegerField()
         day_generated = fields.GeneratedField(
